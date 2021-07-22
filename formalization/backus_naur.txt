@@ -1,0 +1,6 @@
+<main> ::= {<expression> <EOF>} 
+<expression> ::= <sum> {("+" | "-") <sum>}
+<sum> ::= <multiplication> {("*" | "/" | "%") <multiplication>}
+<multiplication> ::= <exponentiation> {"^" <exponentiation>}
+<exponentiation> ::= ["+" | "-"] <positiveValue>
+<positiveValue> ::=  "(" <expression> ")" | "Float" | "Integer"

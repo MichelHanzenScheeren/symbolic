@@ -1,0 +1,15 @@
+dataTypes: {
+  'Int',
+  'Float'
+},
+operators: {
+  '+': 'add',
+  '-': 'subtract',
+  '*': 'multiply',
+  '/': 'divide',
+  '%': 'rest',
+  '^': 'elevate',
+  '~': 'root'
+  '(': 'left_paren',
+  ')': 'right_paren'
+}

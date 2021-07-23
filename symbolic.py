@@ -1,4 +1,7 @@
+from app.shared.tokens_definition import TokenType
+from app.lexer.lexer import Lexer
 from sys import argv
+
 
 def run():
   print('Symbolic v1.0 - a python based interpreter')
@@ -15,11 +18,15 @@ def terminal():
   try:
     while True:
       text = input('~> ')
-      print(f'text: {text}')
+      lexer = Lexer(text, 'terminal')
+      while True:
+        token, location = lexer.nextToken()
+        print(f'{token} in {location}')
+        if token.key == TokenType.EOF: break
   except KeyboardInterrupt:
     print('\nsee you later! :)', end='')
-  except:
-    print('Something wrong has happened!')
+  except Exception as error:
+    print(error)
 
-# Symbolic starts
-run()
+
+run() # Symbolic starts

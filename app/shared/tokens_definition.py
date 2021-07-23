@@ -36,5 +36,7 @@ NUMBERS = {
 
 ### UTILITIES TO IDENTIFICATE TOKEN PROPERTIES ###
 # This implies to show their value or their key in error messages
-def isSimpleToken(key): 
-  return OPERATORS.get(key) != None
+class Utils:
+  @staticmethod
+  def isComplexToken(key): 
+    return OPERATORS.get(key) is None

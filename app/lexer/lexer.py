@@ -1,7 +1,8 @@
 import re as regex
 from app.lexer.location import Location
 from app.lexer.token import Token
-from  app.shared.tokens_definition import *
+from app.shared.tokens_definition import *
+from app.shared.error import Error
 
 
 class Lexer:
@@ -19,6 +20,10 @@ class Lexer:
   def peekAhead(self, quantity=1):
     next = self.location.position + quantity
     return self.text[next] if next < len(self.text) else None
+
+  def abort(self):
+    symbol = TokenType.EOF if self.currentChar is None else self.currentChar
+    raise Error('Lexer error', symbol, self.location.copy(), self.text)
 
   def nextToken(self):
     while self.is_skip(): self.advance()
@@ -42,8 +47,7 @@ class Lexer:
     for key, value in iterator.items():
       if validateFunction(value, term):
         return (Token(key, term, Utils.isComplexToken(key)), location)
-    raise Exception('DEU RUIM PIA')
-    # raise LexerError(self.currentChar, self.location)
+    self.abort()
 
   def advanceWhileMatch(self, pattern, term = ''):
     while self.currentChar != None and self.match(pattern, self.currentChar):
@@ -53,8 +57,7 @@ class Lexer:
   def staticTokens(self):
     result = self.staticClassification(OPERATORS)
     if result is not None: return result
-    raise Exception('DEU RUIM PIA')
-    # raise LexerError(self.currentChar, self.location)
+    self.abort()
 
   def staticClassification(self, iterator):
     location = self.location.copy()

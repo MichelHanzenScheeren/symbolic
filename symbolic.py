@@ -11,7 +11,6 @@ def run():
   else:
     print('Invalid entry. Was expecting:')
     print('\t-t\t\tTerminal input mode')
-    print('\t-f\t\tFile input mode')
 
 
 def terminal():

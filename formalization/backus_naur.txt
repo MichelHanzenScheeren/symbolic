@@ -1,6 +1,5 @@
 <main> ::= {<expression> <EOF>} 
-<expression> ::= <sum> {("+" | "-") <sum>}
-<sum> ::= <multiplication> {("*" | "/" | "%") <multiplication>}
-<multiplication> ::= <exponentiation> {"^" <exponentiation>}
-<exponentiation> ::= ["+" | "-"] <positiveValue>
-<positiveValue> ::=  "(" <expression> ")" | "Float" | "Integer"
+<expression> ::= <term> {("+" | "-") <term>}
+<term> ::= <factor> {("*" | "/" | "%") <factor>}
+<factor> ::= <value> {"^" <value>}
+<value> ::= (("+" | "-") <value>) | "(" <expression> ")" | "Float" | "Integer"

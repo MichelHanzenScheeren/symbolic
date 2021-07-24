@@ -40,3 +40,8 @@ class Utils:
   @staticmethod
   def isComplexToken(key): 
     return OPERATORS.get(key) is None
+  
+  @staticmethod
+  def getTokenSymbol(key):
+    symbol = OPERATORS.get(key)
+    return symbol or key

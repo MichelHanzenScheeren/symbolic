@@ -1,3 +1,4 @@
+from app.parser.parser import Parser
 from app.shared.tokens_definition import TokenType
 from app.lexer.lexer import Lexer
 from sys import argv
@@ -18,10 +19,8 @@ def terminal():
     while True:
       text = input('~> ')
       lexer = Lexer(text, 'terminal')
-      while True:
-        token, location = lexer.nextToken()
-        print(f'{token} in {location}')
-        if token.key == TokenType.EOF: break
+      parser = Parser(lexer)
+      parser.parse()
   except KeyboardInterrupt:
     print('\nsee you later! :)', end='')
   except Exception as error:

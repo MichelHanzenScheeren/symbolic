@@ -12,7 +12,7 @@ class Lexer:
     self.location = Location()
     self.currentChar = self.peekAhead(quantity=0) # Initialization with first char
 
-  def advance(self, quantity=1):
+  def consumeChar(self, quantity=1):
     self.location.advance(self.currentChar, quantity)
     self.currentChar = self.text[self.location.position] if self.location.position < len(self.text) else None
     return self.text[self.location.position - quantity]
@@ -26,7 +26,7 @@ class Lexer:
     raise Error('Lexer error', symbol, self.location.copy(), self.text)
 
   def nextToken(self):
-    while self.is_skip(): self.advance()
+    while self.is_skip(): self.consumeChar()
     if self.currentChar is None:
       return (Token(TokenType.EOF, 'EOF', False), self.location.copy())
     if self.match(NUMBERS_PATTERN, self.currentChar): 
@@ -51,7 +51,7 @@ class Lexer:
 
   def advanceWhileMatch(self, pattern, term = ''):
     while self.currentChar != None and self.match(pattern, self.currentChar):
-      term += self.advance()
+      term += self.consumeChar()
     return term
 
   def staticTokens(self):
@@ -64,7 +64,7 @@ class Lexer:
     for key, value in iterator.items():
       term = self.getCharacters(len(value))
       if value == term:
-        self.advance(len(term))
+        self.consumeChar(len(term))
         return (Token(key, term, Utils.isComplexToken(key)), location)
     return None
 

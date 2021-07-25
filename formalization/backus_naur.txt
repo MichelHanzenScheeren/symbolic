@@ -1,5 +1,7 @@
-<main> ::= {<expression> <EOF>} 
-<expression> ::= <term> {("+" | "-") <term>}
-<term> ::= <factor> {("*" | "/" | "%") <factor>}
-<factor> ::= <value> {"^" <value>}
-<value> ::= (("+" | "-") <value>) | "(" <expression> ")" | "Float" | "Integer"
+<parse> ::= {<statement>} <EOF>
+statement> ::= <expression>
+<expression> ::= <term> [("+" | "-") <expression>]
+<term> ::= <factor> [("*" | "/" | "%") <term>]
+<factor> ::= <value> ["^" <factor>]
+<unary> ::= (("+" | "-") <unary>) | <value> 
+<value> ::= "Float" | "Integer" | "(" <expression> ")" 

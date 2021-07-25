@@ -5,7 +5,7 @@ from app.lexer.token import Token
 class Error(Exception):
   def __init__(self, errorType, symbol, location, text, expecteds=None):
     message = f'{errorType}: '
-    if symbol == TokenType.EOF: message += 'Unexpected end of input in {location}.'
+    if symbol == TokenType.EOF: message += f'Unexpected end of input in {location}.'
     else: message += f'Invalid symbol "{symbol}" in {location}.'
     if expecteds != None: message += f'\n  Was expecting: {self.expectedsText(expecteds)}'
     message += f'\n  {self.showError(text, location.position, location.column, symbol)}'

@@ -22,7 +22,7 @@ def terminal():
       parser = Parser(lexer)
       parser.parse()
   except KeyboardInterrupt:
-    print('\nsee you later! :)', end='')
+    print('\nsee you later! :)')
   except Exception as error:
     print(error)
 

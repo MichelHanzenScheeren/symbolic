@@ -31,6 +31,8 @@ class Lexer:
       return (Token(TokenType.EOF, 'EOF', False), self.location.copy())
     if self.match(NUMBERS_PATTERN, self.currentChar): 
       return self.regexClassification(NUMBERS_PATTERN, NUMBERS, self.match)
+    if self.match(WORDS_PATTERN, self.currentChar):
+      return self.regexClassification(WORDS_PATTERN, WORDS, self.matchOrCompare)
     return self.staticTokens()
 
   def is_skip(self):
@@ -53,6 +55,11 @@ class Lexer:
     while self.currentChar != None and self.match(pattern, self.currentChar):
       term += self.consumeChar()
     return term
+
+  def matchOrCompare(self, value, term):
+    if value.find('*') != -1 or value.find('[') != -1:
+      return self.match(value, term)
+    return value == term
 
   def staticTokens(self):
     result = self.staticClassification(OPERATORS)

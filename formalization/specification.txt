@@ -1,15 +1,26 @@
 dataTypes: {
   'Int',
   'Float'
+  'False',
+  'True'
 },
 operators: {
-  '+': 'add',
-  '-': 'subtract',
-  '*': 'multiply',
-  '/': 'divide',
-  '%': 'rest',
-  '^': 'elevate',
-  '~': 'root'
-  '(': 'left_paren',
-  ')': 'right_paren'
+  '+':  'add',
+  '-':  'subtract',
+  '*':  'multiply',
+  '/':  'divide',
+  '%':  'rest',
+  '^':  'elevate',
+  '~':  'root'
+  '(':  'left_paren',
+  ')':  'right_paren'
+  '||': 'or',
+  '&&': 'and',
+  '==': 'equal',
+  '!=': 'different', 
+  '!':  'not',
+  '>=': 'greaterEqual',
+  '>':  'greater',
+  '<=': 'lessEqual',
+  '>': 'less',
 }

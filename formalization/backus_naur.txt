@@ -1,7 +1,14 @@
 <parse> ::= {<statement>} <EOF>
 statement> ::= <expression>
-<expression> ::= <term> [("+" | "-") <expression>]
+
+
+<expression> ::= <andExpression> ["||"  <expression>]
+<andExpression> ::= <notExpression> ["&&" <andExpression>]
+<notExpression> ::= "!" <notExpression> | <boolOperators>
+<boolOperators> ::= <mathExpression> [("==" | "!=" | ">" | ">=" | "<" | "<=") <boolOperators>]
+
+<mathExpression> ::= <term> [("+" | "-") <mathExpression>]
 <term> ::= <factor> [("*" | "/" | "%") <term>]
 <factor> ::= <value> ["^" <factor>]
 <unary> ::= (("+" | "-") <unary>) | <value> 
-<value> ::= "Float" | "Integer" | "(" <expression> ")" 
+<value> ::= "Float" | "Integer" | "False" | "True" | "(" <expression> ")"

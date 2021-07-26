@@ -8,13 +8,18 @@ class TokenType(Enum):
   MULTIPLY, DIVIDE, REST = 'MULTIPLY', 'DIVIDE', 'REST'
   ELEVATE, ROOT = 'ELEVATE', 'ROOT'
   LEFT_PAREN, RIGHT_PAREN = 'LEFT_PAREN', 'RIGHT_PAREN'
+  OR, AND = 'OR', 'AND',
+  EQUAL, DIFFERENT, NOT = 'EQUAL', 'DIFFERENT', 'NOT'
+  GREATER_EQUAL, GREATER = 'GREATER_EQUAL', 'GREATER'
+  LESS_EQUAL, LESS = 'LESS_EQUAL', 'LESS'
   # VALUES
-  FLOAT, INT = 'FLOAT', 'INT'
+  FLOAT, INT, FALSE, TRUE = 'FLOAT', 'INT', 'FALSE', 'TRUE'
+  IDENTIFIER = 'IDENTIFIER'
   # END OF INPUT
   EOF = 'EOF'
 
 
-### SIMBOLS OR PATTERNS RELATIONS ###
+### SYMBOLS OR PATTERNS RELATIONS ###
 SKIP = [' ', '\r', '\t', '\n']
 OPERATORS = {
   TokenType.ADD: '+',
@@ -25,7 +30,16 @@ OPERATORS = {
   TokenType.ELEVATE: '^',
   TokenType.ROOT: '~',
   TokenType.LEFT_PAREN: '(',
-  TokenType.RIGHT_PAREN: ')'
+  TokenType.RIGHT_PAREN: ')',
+  TokenType.OR: '||',
+  TokenType.AND: '&&',
+  TokenType.EQUAL: '==',
+  TokenType.DIFFERENT: '!=',
+  TokenType.NOT: '!',
+  TokenType.GREATER_EQUAL: '>=',
+  TokenType.GREATER: '>',
+  TokenType.LESS_EQUAL: '<=',
+  TokenType.LESS: '<',
 }
 NUMBERS_PATTERN = r'[0-9]|[.]'
 NUMBERS = {
@@ -33,14 +47,21 @@ NUMBERS = {
   TokenType.INT: r'([0-9])+',
 }
 
+WORDS_PATTERN = r'[A-Z]|[a-z]|[_]|[0-9]'
+WORDS = {
+  TokenType.TRUE: 'True',
+  TokenType.FALSE: 'False',
+  TokenType.IDENTIFIER: r'([A-Z]|[a-z]|[_])([A-z]|[a-z]|[0-9]|[_])*',
+}
 
-### UTILITIES TO IDENTIFICATE TOKEN PROPERTIES ###
+
+### UTILITIES TO IDENTIFY TOKEN PROPERTIES ###
 # This implies to show their value or their key in error messages
 class Utils:
   @staticmethod
   def isComplexToken(key): 
-    return OPERATORS.get(key) is None
-  
+    return OPERATORS.get(key) is None and key not in [TokenType.TRUE, TokenType.FALSE]
+
   @staticmethod
   def getTokenSymbol(key):
     symbol = OPERATORS.get(key)

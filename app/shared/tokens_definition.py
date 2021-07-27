@@ -13,7 +13,7 @@ class TokenType(Enum):
   GREATER_EQUAL, GREATER = 'GREATER_EQUAL', 'GREATER'
   LESS_EQUAL, LESS = 'LESS_EQUAL', 'LESS'
   ASSIGNMENT = 'ASSIGNMENT'
-  END_LINE = '\n'
+  END_LINE, COMMA = 'END_LINE', 'COMMA'
   # VALUES
   DECIMAL, INTEGER, FALSE, TRUE = 'DECIMAL', 'INTEGER', 'FALSE', 'TRUE'
   IDENTIFIER = 'IDENTIFIER'
@@ -26,6 +26,8 @@ class TokenType(Enum):
 ### SYMBOLS OR PATTERNS RELATIONS ###
 SKIP = [' ', '\r', '\t']
 OPERATORS = {
+  TokenType.END_LINE: '\n',
+  TokenType.COMMA: ',',
   TokenType.ADD: '+',
   TokenType.SUBTRACT: '-',
   TokenType.MULTIPLY: '*',
@@ -45,7 +47,6 @@ OPERATORS = {
   TokenType.LESS_EQUAL: '<=',
   TokenType.LESS: '<',
   TokenType.ASSIGNMENT: '=',
-  TokenType.END_LINE: '\n',
 }
 NUMBERS_PATTERN = r'[0-9]|[.]'
 NUMBERS = {
@@ -77,4 +78,5 @@ class Utils:
   @staticmethod
   def getTokenSymbol(key):
     symbol = OPERATORS.get(key) or RESERVED_WORDS.get(key)
+    if symbol == '\n': symbol = TokenType.END_LINE
     return symbol or key

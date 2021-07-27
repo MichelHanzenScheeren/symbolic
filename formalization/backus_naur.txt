@@ -1,7 +1,7 @@
 # REGEX
 <identifier> ::= ([A-Z]|[a-z]|[_])([A-z]|[a-z]|[0-9]|[_])*
-<floatValue> ::= (([0-9])+[.]([0-9])*)|(([0-9])*[.]([0-9])+)
-<intValue> ::= ([0-9])+
+<decimal> ::= (([0-9])+[.]([0-9])*)|(([0-9])*[.]([0-9])+)
+<integer> ::= ([0-9])+
 
 # PARSER
 <parse> ::= {<line>} <EOF>
@@ -15,9 +15,11 @@
 <term> ::= <factor> [("*" | "/" | "%") <term>]
 <factor> ::= <value> ["^" <factor>]
 <unary> ::= (("+" | "-") <unary>) | <value> 
-<value> ::= <floatValue> | <intValue> | "False" | "True" | <identifier>  | "(" <expression> ")"
+<value> ::= <constants> | <variables>  | "(" <expression> ")"
+<constants> ::= <decimal> | <integer> | "False" | "True"
+<variables> ::= <identifier>
 
-<variableDeclaration> ::= <dataType> <listDeclaration>
+<variableDeclaration> ::= <dataType> <declarationList>
 <dataType> ::= 'Float' | 'Int' | 'Bool'
-<listDeclaration> ::= <identifier> [<assignment>] [',' <listDeclaration>]
+<declarationList> ::= <identifier> [<assignment>] [',' <declarationList>]
 <assignment> ::= '=' <expression>

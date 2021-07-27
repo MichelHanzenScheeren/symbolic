@@ -5,6 +5,7 @@ from app.parser.tree import Tree
 
 
 CONSTANTS = [TokenType.DECIMAL, TokenType.INTEGER, TokenType.FALSE, TokenType.TRUE]
+DATA_TYPE = [TokenType.FLOAT, TokenType.INT, TokenType.BOOL]
 
 class Parser:
   def __init__(self, lexer):
@@ -46,6 +47,10 @@ class Parser:
     elif self.checkToken(CONSTANTS):
       self.tree.registerNode(self.expression())
       return self.consumeToken(TokenType.END_LINE)
+    elif self.checkToken(DATA_TYPE):
+      self.variableDeclaration()
+      return self.consumeToken(TokenType.END_LINE)
+    return False
 
   def endLine(self):
     self.consumeToken(TokenType.END_LINE)
@@ -91,12 +96,40 @@ class Parser:
     return self.value()
 
   def value(self):
-    types = [TokenType.IDENTIFIER] + CONSTANTS 
-    if self.checkToken(types):
-      return Node(self.consumeToken(types))
+    if self.checkToken(CONSTANTS):
+      return self.constans()
+    elif self.checkToken(TokenType.IDENTIFIER): 
+      return self.variables()
     elif self.checkToken(TokenType.LEFT_PAREN):
       self.consumeToken(TokenType.LEFT_PAREN)
       binaryOperation = self.expression()
       self.consumeToken(TokenType.RIGHT_PAREN)
       return binaryOperation
-    self.abort(types)
+    self.abort(CONSTANTS + [TokenType.IDENTIFIER])
+
+  def constans(self):
+    node = self.consumeToken(CONSTANTS)
+    return Node(node)
+
+  def variables(self):
+    node = self.consumeToken(TokenType.IDENTIFIER)
+    return Node(node)
+
+  def variableDeclaration(self):
+    self.dataType()
+    self.declarationList()
+
+  def dataType(self):
+    self.consumeToken(DATA_TYPE)
+
+  def declarationList(self):
+    self.consumeToken(TokenType.IDENTIFIER)
+    if self.checkToken(TokenType.ASSIGNMENT): 
+      self.assignment()
+    if self.checkToken(TokenType.COMMA):
+      self.consumeToken(TokenType.COMMA)
+      self.declarationList()
+
+  def assignment(self):
+    self.consumeToken(TokenType.ASSIGNMENT)
+    self.expression()

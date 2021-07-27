@@ -5,7 +5,8 @@
 
 # PARSER
 <parse> ::= {<line>} <EOF>
-<line> ::= <endLine> | ((<expression> | <variableDeclaration>) <endLine>)
+<line> ::= <endLine> | ((<identifierOptions> | <variableDeclaration>) <endLine>)
+<identifierOptions> ::= <identifier> (<expression> | <assignment>)
 
 <expression> ::= <andExpression> ["||"  <expression>]
 <andExpression> ::= <notExpression> ["&&" <andExpression>]

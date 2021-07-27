@@ -5,7 +5,8 @@ class Tree:
   def __repr__(self):
     text = ''
     for index, node in enumerate(self.nodes):
-      text += f'\nNode {index + 1}: {node}'
+      text += f'Node {index + 1}: {node}'
+      if index != len(self.nodes) - 1:  text += '\n'
     return text
 
   def registerNode(self, node):

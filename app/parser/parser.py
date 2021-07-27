@@ -43,36 +43,45 @@ class Parser:
     print('END STATEMENT')
 
   def expression(self):
-    left = self.term()
-    if self.checkToken([TokenType.ADD, TokenType.SUBTRACT]):
-      operation = self.consumeToken([TokenType.ADD, TokenType.SUBTRACT])
-      return BinaryNode(left, Node(operation), self.expression())
-    return left
+    return self.binaryOperation(self.andExpression, self.expression, TokenType.OR)
+
+  def andExpression(self):
+    return self.binaryOperation(self.notExpression, self.andExpression, TokenType.AND)
+
+  def notExpression(self):
+    if self.checkToken(TokenType.NOT):
+      return UnaryNode(Node(self.consumeToken(TokenType.NOT)), self.notExpression())
+    return self.boolOperators()
+
+  def boolOperators(self):
+    tokens = [TokenType.EQUAL, TokenType.DIFFERENT, TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL]
+    return self.binaryOperation(self.mathExpression, self.boolOperators, tokens)
+
+  def mathExpression(self):
+    return self.binaryOperation(self.term, self.mathExpression, [TokenType.ADD, TokenType.SUBTRACT])
 
   def term(self):
-    left = self.factor()
-    if self.checkToken([TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.REST]):
-      operation = self.consumeToken([TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.REST])
-      return BinaryNode(left, Node(operation), self.term())
-    return left
+    return self.binaryOperation(self.factor, self.term, [TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.REST])
 
   def factor(self):
-    left = self.unary()
-    if self.checkToken([TokenType.ELEVATE]):
-      operation = self.consumeToken([TokenType.ELEVATE])
-      return BinaryNode(left, Node(operation), self.factor())
+    return self.binaryOperation(self.unary, self.factor, TokenType.ELEVATE)
+
+  def binaryOperation(self, nextFunction, currentFunction, tokens):
+    left = nextFunction()
+    if self.checkToken(tokens):
+      operation = self.consumeToken(tokens)
+      return BinaryNode(left, Node(operation), currentFunction())
     return left
 
   def unary(self):
     if self.checkToken([TokenType.ADD, TokenType.SUBTRACT]):
       signal = self.consumeToken([TokenType.ADD, TokenType.SUBTRACT])
       return UnaryNode(Node(signal), self.unary())
-    else:
-      return self.value()
+    return self.value()
 
   def value(self):
-    if self.checkToken([TokenType.FLOAT, TokenType.INT]):
-      return Node(self.consumeToken([TokenType.FLOAT, TokenType.INT]))
+    if self.checkToken([TokenType.FLOAT, TokenType.INT, TokenType.FALSE, TokenType.TRUE]):
+      return Node(self.consumeToken([TokenType.FLOAT, TokenType.INT, TokenType.FALSE, TokenType.TRUE]))
     elif self.checkToken(TokenType.LEFT_PAREN):
       self.consumeToken(TokenType.LEFT_PAREN)
       binaryOperation = self.expression()

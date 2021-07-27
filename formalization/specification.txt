@@ -23,4 +23,5 @@ operators: {
   '>':  'greater',
   '<=': 'lessEqual',
   '>': 'less',
+  '=': assignment,
 }

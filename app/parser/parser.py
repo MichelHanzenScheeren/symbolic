@@ -31,16 +31,12 @@ class Parser:
     raise Error('Parser error', symbol, self.tokenLocation, self.lexer.text, expecteds)
 
   def parse(self):
-    print('PROGRAM INIT')
     while not self.checkToken(TokenType.EOF):
       self.statement()
-    print('PROGRAM END')
     print(self.tree)
 
   def statement(self):
-    print('START STATEMENT')
     self.tree.registerNode(self.expression())
-    print('END STATEMENT')
 
   def expression(self):
     return self.binaryOperation(self.andExpression, self.expression, TokenType.OR)
@@ -80,11 +76,11 @@ class Parser:
     return self.value()
 
   def value(self):
-    if self.checkToken([TokenType.FLOAT, TokenType.INT, TokenType.FALSE, TokenType.TRUE]):
-      return Node(self.consumeToken([TokenType.FLOAT, TokenType.INT, TokenType.FALSE, TokenType.TRUE]))
+    if self.checkToken([TokenType.FLOAT_VALUE, TokenType.INT_VALUE, TokenType.FALSE, TokenType.TRUE]):
+      return Node(self.consumeToken([TokenType.FLOAT_VALUE, TokenType.INT_VALUE, TokenType.FALSE, TokenType.TRUE]))
     elif self.checkToken(TokenType.LEFT_PAREN):
       self.consumeToken(TokenType.LEFT_PAREN)
       binaryOperation = self.expression()
       self.consumeToken(TokenType.RIGHT_PAREN)
       return binaryOperation
-    self.abort([TokenType.FLOAT, TokenType.INT, TokenType.LEFT_PAREN])
+    self.abort([TokenType.FLOAT_VALUE, TokenType.INT_VALUE, TokenType.LEFT_PAREN])

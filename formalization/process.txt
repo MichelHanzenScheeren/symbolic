@@ -1,5 +1,0 @@
-Phase 1: Expression interpreter (22/07/2021)
-  1.1: In the initial phase, I am going to build a basic interpreter for math expressions;
-  1.2: specification.txt (initial types and symbols);
-  1.3: backus_naur.txt (logical and precedence of language elements);
-  1.4: Build basic Lexer (22/07/2021)

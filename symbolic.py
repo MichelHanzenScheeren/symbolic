@@ -19,12 +19,12 @@ def terminal():
     while True:
       text = input('~> ')
       lexer = Lexer(text, 'terminal')
-      # while True:
-      #   symbol, location = lexer.nextToken()
-      #   print(symbol)
-      #   if symbol.key == TokenType.EOF: break 
-      parser = Parser(lexer)
-      parser.parse()
+      while True:
+        symbol, location = lexer.nextToken()
+        print(symbol)
+        if symbol.key == TokenType.EOF: break 
+      # parser = Parser(lexer)
+      # parser.parse()
   except KeyboardInterrupt:
     print('\nsee you later! :)')
   except Exception as error:

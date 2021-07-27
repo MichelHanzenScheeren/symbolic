@@ -12,9 +12,12 @@ class TokenType(Enum):
   EQUAL, DIFFERENT, NOT = 'EQUAL', 'DIFFERENT', 'NOT'
   GREATER_EQUAL, GREATER = 'GREATER_EQUAL', 'GREATER'
   LESS_EQUAL, LESS = 'LESS_EQUAL', 'LESS'
+  ASSIGNMENT = 'ASSIGNMENT'
   # VALUES
-  FLOAT, INT, FALSE, TRUE = 'FLOAT', 'INT', 'FALSE', 'TRUE'
+  FLOAT_VALUE, INT_VALUE, FALSE, TRUE = 'FLOAT_VALUE', 'INT_VALUE', 'FALSE', 'TRUE'
   IDENTIFIER = 'IDENTIFIER'
+  # TYPES
+  FLOAT, INT = 'FLOAT', 'INT'
   # END OF INPUT
   EOF = 'EOF'
 
@@ -40,19 +43,25 @@ OPERATORS = {
   TokenType.GREATER: '>',
   TokenType.LESS_EQUAL: '<=',
   TokenType.LESS: '<',
+  TokenType.ASSIGNMENT: '=',
 }
 NUMBERS_PATTERN = r'[0-9]|[.]'
 NUMBERS = {
-  TokenType.FLOAT: r'(([0-9])+[.]([0-9])*)|(([0-9])*[.]([0-9])+)',
-  TokenType.INT: r'([0-9])+',
+  TokenType.FLOAT_VALUE: r'(([0-9])+[.]([0-9])*)|(([0-9])*[.]([0-9])+)',
+  TokenType.INT_VALUE: r'([0-9])+',
 }
 
 WORDS_PATTERN = r'[A-Z]|[a-z]|[_]|[0-9]'
-WORDS = {
+RESERVED_WORDS = {
   TokenType.TRUE: 'True',
   TokenType.FALSE: 'False',
+  TokenType.INT: 'Int',
+  TokenType.FLOAT: 'Float',
+}
+IDENTIFIER = {
   TokenType.IDENTIFIER: r'([A-Z]|[a-z]|[_])([A-z]|[a-z]|[0-9]|[_])*',
 }
+
 
 
 ### UTILITIES TO IDENTIFY TOKEN PROPERTIES ###
@@ -60,7 +69,7 @@ WORDS = {
 class Utils:
   @staticmethod
   def isComplexToken(key): 
-    return OPERATORS.get(key) is None and key not in [TokenType.TRUE, TokenType.FALSE]
+    return OPERATORS.get(key) is None and RESERVED_WORDS.get(key) is None
 
   @staticmethod
   def getTokenSymbol(key):

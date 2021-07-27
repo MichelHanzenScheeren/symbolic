@@ -32,7 +32,7 @@ class Lexer:
     if self.match(NUMBERS_PATTERN, self.currentChar): 
       return self.regexClassification(NUMBERS_PATTERN, NUMBERS, self.match)
     if self.match(WORDS_PATTERN, self.currentChar):
-      return self.regexClassification(WORDS_PATTERN, WORDS, self.matchOrCompare)
+      return self.regexClassification(WORDS_PATTERN, {**RESERVED_WORDS, **IDENTIFIER}, self.matchOrCompare)
     return self.staticTokens()
 
   def is_skip(self):

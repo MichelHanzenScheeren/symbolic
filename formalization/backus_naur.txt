@@ -1,14 +1,23 @@
-<parse> ::= {<statement>} <EOF>
-statement> ::= <expression>
+# REGEX
+<identifier> ::= ([A-Z]|[a-z]|[_])([A-z]|[a-z]|[0-9]|[_])*
+<floatValue> ::= (([0-9])+[.]([0-9])*)|(([0-9])*[.]([0-9])+)
+<intValue> ::= ([0-9])+
 
+# PARSER
+<parse> ::= {<line>} <EOF>
+<line> ::= <endLine> | ((<expression> | <variableDeclaration>) <endLine>)
 
 <expression> ::= <andExpression> ["||"  <expression>]
 <andExpression> ::= <notExpression> ["&&" <andExpression>]
 <notExpression> ::= "!" <notExpression> | <boolOperators>
 <boolOperators> ::= <mathExpression> [("==" | "!=" | ">" | ">=" | "<" | "<=") <boolOperators>]
-
 <mathExpression> ::= <term> [("+" | "-") <mathExpression>]
 <term> ::= <factor> [("*" | "/" | "%") <term>]
 <factor> ::= <value> ["^" <factor>]
 <unary> ::= (("+" | "-") <unary>) | <value> 
-<value> ::= "Float" | "Integer" | "False" | "True" | "(" <expression> ")"
+<value> ::= <floatValue> | <intValue> | "False" | "True" | <identifier>  | "(" <expression> ")"
+
+<variableDeclaration> ::= <dataType> <listDeclaration>
+<dataType> ::= 'Float' | 'Int' | 'Bool'
+<listDeclaration> ::= <identifier> [<assignment>] [',' <listDeclaration>]
+<assignment> ::= '=' <expression>

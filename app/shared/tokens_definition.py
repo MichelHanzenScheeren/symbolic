@@ -13,17 +13,18 @@ class TokenType(Enum):
   GREATER_EQUAL, GREATER = 'GREATER_EQUAL', 'GREATER'
   LESS_EQUAL, LESS = 'LESS_EQUAL', 'LESS'
   ASSIGNMENT = 'ASSIGNMENT'
+  END_LINE = '\n'
   # VALUES
-  FLOAT_VALUE, INT_VALUE, FALSE, TRUE = 'FLOAT_VALUE', 'INT_VALUE', 'FALSE', 'TRUE'
+  DECIMAL, INTEGER, FALSE, TRUE = 'DECIMAL', 'INTEGER', 'FALSE', 'TRUE'
   IDENTIFIER = 'IDENTIFIER'
   # TYPES
-  FLOAT, INT = 'FLOAT', 'INT'
+  FLOAT, INT, BOOL = 'FLOAT', 'INT', 'BOOL'
   # END OF INPUT
   EOF = 'EOF'
 
 
 ### SYMBOLS OR PATTERNS RELATIONS ###
-SKIP = [' ', '\r', '\t', '\n']
+SKIP = [' ', '\r', '\t']
 OPERATORS = {
   TokenType.ADD: '+',
   TokenType.SUBTRACT: '-',
@@ -44,17 +45,19 @@ OPERATORS = {
   TokenType.LESS_EQUAL: '<=',
   TokenType.LESS: '<',
   TokenType.ASSIGNMENT: '=',
+  TokenType.END_LINE: '\n',
 }
 NUMBERS_PATTERN = r'[0-9]|[.]'
 NUMBERS = {
-  TokenType.FLOAT_VALUE: r'(([0-9])+[.]([0-9])*)|(([0-9])*[.]([0-9])+)',
-  TokenType.INT_VALUE: r'([0-9])+',
+  TokenType.DECIMAL: r'(([0-9])+[.]([0-9])*)|(([0-9])*[.]([0-9])+)',
+  TokenType.INTEGER: r'([0-9])+',
 }
 
 WORDS_PATTERN = r'[A-Z]|[a-z]|[_]|[0-9]'
 RESERVED_WORDS = {
   TokenType.TRUE: 'True',
   TokenType.FALSE: 'False',
+  TokenType.BOOL: 'Bool',
   TokenType.INT: 'Int',
   TokenType.FLOAT: 'Float',
 }
@@ -73,5 +76,5 @@ class Utils:
 
   @staticmethod
   def getTokenSymbol(key):
-    symbol = OPERATORS.get(key)
+    symbol = OPERATORS.get(key) or RESERVED_WORDS.get(key)
     return symbol or key

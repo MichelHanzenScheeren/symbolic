@@ -4,6 +4,8 @@ from app.parser.nodes import *
 from app.parser.tree import Tree
 
 
+CONSTANTS = [TokenType.DECIMAL, TokenType.INTEGER, TokenType.FALSE, TokenType.TRUE]
+
 class Parser:
   def __init__(self, lexer):
     self.lexer = lexer
@@ -32,11 +34,24 @@ class Parser:
 
   def parse(self):
     while not self.checkToken(TokenType.EOF):
-      self.statement()
+      if (self.line()): continue
+      self.abort([TokenType.IDENTIFIER] + CONSTANTS)
     print(self.tree)
 
-  def statement(self):
-    self.tree.registerNode(self.expression())
+  def line(self):
+    if self.checkToken(TokenType.END_LINE): return self.endLine()
+    elif self.checkToken(TokenType.IDENTIFIER):
+      self.tree.registerNode(self.expression())
+      return self.consumeToken(TokenType.END_LINE)
+    elif self.checkToken(CONSTANTS):
+      self.tree.registerNode(self.expression())
+      return self.consumeToken(TokenType.END_LINE)
+
+  def endLine(self):
+    self.consumeToken(TokenType.END_LINE)
+    while self.checkToken(TokenType.END_LINE):
+      self.consumeToken(TokenType.END_LINE)
+    return True
 
   def expression(self):
     return self.binaryOperation(self.andExpression, self.expression, TokenType.OR)
@@ -76,11 +91,12 @@ class Parser:
     return self.value()
 
   def value(self):
-    if self.checkToken([TokenType.FLOAT_VALUE, TokenType.INT_VALUE, TokenType.FALSE, TokenType.TRUE]):
-      return Node(self.consumeToken([TokenType.FLOAT_VALUE, TokenType.INT_VALUE, TokenType.FALSE, TokenType.TRUE]))
+    types = [TokenType.IDENTIFIER] + CONSTANTS 
+    if self.checkToken(types):
+      return Node(self.consumeToken(types))
     elif self.checkToken(TokenType.LEFT_PAREN):
       self.consumeToken(TokenType.LEFT_PAREN)
       binaryOperation = self.expression()
       self.consumeToken(TokenType.RIGHT_PAREN)
       return binaryOperation
-    self.abort([TokenType.FLOAT_VALUE, TokenType.INT_VALUE, TokenType.LEFT_PAREN])
+    self.abort(types)

@@ -29,6 +29,6 @@ class Error(Exception):
     idx_start = max(text.rfind('\n', 0, position), 0)
     idx_end = text.find('\n', idx_start + 1)
     if idx_end < 0: idx_end = len(text)
-    line = text[idx_start:idx_end].replace('\t', '') + '\n '
+    line = text[idx_start:idx_end].replace('\t', '').replace('\n', '') + '\n '
     indicators = ' ' * columnStart + '^' * (columnEnd - columnStart)
     return line + indicators

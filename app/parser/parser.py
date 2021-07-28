@@ -56,16 +56,17 @@ class Parser:
       return self.endLine()
     elif self.checkToken(TokenType.IDENTIFIER):
       self.registerNode(self.identifierOption())
-      return self.consumeToken(TokenType.END_LINE)
+      return self.endLine()
     elif self.checkToken(CONSTANTS):
       self.registerNode(self.expression())
-      return self.consumeToken(TokenType.END_LINE)
+      return self.endLine()
     elif self.checkToken(DATA_TYPE):
       self.registerNode(self.variableDeclaration())
-      return self.consumeToken(TokenType.END_LINE)
+      return self.endLine()
     return False
 
   def endLine(self):
+    if self.checkToken(TokenType.EOF): return True
     self.consumeToken(TokenType.END_LINE)
     while self.checkToken(TokenType.END_LINE):
       self.consumeToken(TokenType.END_LINE)
